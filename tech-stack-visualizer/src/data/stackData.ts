@@ -12,6 +12,7 @@ export const nodes: StackNode[] = [
   {
     id: 'cloud',
     label: 'Cloud Hosting',
+    icon: '☁️',
     layerId: 'infra',
     description: 'Compute, networking, and deployment target for every service above it.',
     tags: ['AWS', 'GCP', 'Kubernetes'],
@@ -20,6 +21,7 @@ export const nodes: StackNode[] = [
   {
     id: 'cicd',
     label: 'CI/CD',
+    icon: '🔁',
     layerId: 'infra',
     description: 'Automates build, test, and deploy pipelines for the whole stack.',
     tags: ['GitHub Actions', 'Docker'],
@@ -28,6 +30,7 @@ export const nodes: StackNode[] = [
   {
     id: 'database',
     label: 'Database',
+    icon: '🗄️',
     layerId: 'data',
     description: 'Persists structured application state and business data.',
     tags: ['Postgres', 'Redis'],
@@ -36,6 +39,7 @@ export const nodes: StackNode[] = [
   {
     id: 'pipeline',
     label: 'Data Pipeline',
+    icon: '🔀',
     layerId: 'data',
     description: 'Moves and transforms data between sources, storage, and models.',
     tags: ['ETL', 'Airflow'],
@@ -44,6 +48,7 @@ export const nodes: StackNode[] = [
   {
     id: 'api',
     label: 'API Layer',
+    icon: '🔌',
     layerId: 'backend',
     description: 'Business logic and service boundary between data and product.',
     tags: ['REST', 'GraphQL'],
@@ -52,6 +57,7 @@ export const nodes: StackNode[] = [
   {
     id: 'ml',
     label: 'ML Services',
+    icon: '🧠',
     layerId: 'backend',
     description: 'Model inference and training jobs consumed by the API layer.',
     tags: ['PyTorch', 'MLOps'],
@@ -60,6 +66,7 @@ export const nodes: StackNode[] = [
   {
     id: 'webapp',
     label: 'Web App',
+    icon: '💻',
     layerId: 'frontend',
     description: 'Customer-facing interface that talks to the API layer.',
     tags: ['React', 'TypeScript'],
@@ -68,6 +75,7 @@ export const nodes: StackNode[] = [
   {
     id: 'mobile',
     label: 'Mobile App',
+    icon: '📱',
     layerId: 'frontend',
     description: 'Native client sharing the same API surface as the web app.',
     tags: ['iOS', 'Android'],
@@ -76,6 +84,7 @@ export const nodes: StackNode[] = [
   {
     id: 'customers',
     label: 'Customers',
+    icon: '👥',
     layerId: 'users',
     description: 'The market segment the product is built for, generating usage and revenue signal back into the stack.',
     tags: ['B2B', 'B2C'],

@@ -26,12 +26,15 @@ export default function DetailPanel({ node, allNodes, onClose }: DetailPanelProp
           <button className="detail-panel__close" onClick={onClose} aria-label="Close">
             ×
           </button>
-          <h2>{node.label}</h2>
+          <div className="detail-panel__title">
+            <span className="detail-panel__icon">{node.icon}</span>
+            <h2>{node.label}</h2>
+          </div>
           <p className="detail-panel__description">{node.description}</p>
 
           <div className="detail-panel__gauge">
             <svg width="120" height="120" viewBox="0 0 120 120">
-              <circle cx="60" cy="60" r={RADIUS} stroke="#1f2937" strokeWidth="10" fill="none" />
+              <circle cx="60" cy="60" r={RADIUS} stroke="#e5e7eb" strokeWidth="10" fill="none" />
               <circle
                 className="detail-panel__gauge-ring"
                 cx="60"
