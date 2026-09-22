@@ -49,7 +49,10 @@ export default function NodeMesh({ node, position, color, isSelected, onSelect }
         />
       </mesh>
       <Html distanceFactor={12} position={[0, 0.7, 0]} center>
-        <div className={`node-label ${isSelected ? 'node-label--active' : ''}`}>{node.label}</div>
+        <div className={`node-label ${isSelected ? 'node-label--active' : ''}`}>
+          <span className="node-label__icon">{node.icon}</span>
+          {node.label}
+        </div>
       </Html>
     </group>
   )

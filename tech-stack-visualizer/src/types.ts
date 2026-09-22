@@ -8,6 +8,7 @@ export interface StackLayer {
 export interface StackNode {
   id: string
   label: string
+  icon: string
   layerId: string
   description: string
   tags: string[]
