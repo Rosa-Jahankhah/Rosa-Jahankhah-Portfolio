@@ -15,7 +15,8 @@ export const nodes: StackNode[] = [
     icon: '☁️',
     layerId: 'infra',
     description: 'Compute, networking, and deployment target for every service above it.',
-    tags: ['AWS', 'GCP', 'Kubernetes'],
+    tags: ['Compute', 'Networking', 'Container orchestration'],
+    companies: ['AWS', 'Google Cloud', 'Microsoft Azure', 'DigitalOcean', 'Cloudflare'],
     connections: ['database', 'api'],
   },
   {
@@ -24,7 +25,8 @@ export const nodes: StackNode[] = [
     icon: '🔁',
     layerId: 'infra',
     description: 'Automates build, test, and deploy pipelines for the whole stack.',
-    tags: ['GitHub Actions', 'Docker'],
+    tags: ['Build', 'Test', 'Deploy'],
+    companies: ['GitHub Actions', 'CircleCI', 'GitLab', 'Jenkins'],
     connections: ['api', 'webapp'],
   },
   {
@@ -33,7 +35,8 @@ export const nodes: StackNode[] = [
     icon: '🗄️',
     layerId: 'data',
     description: 'Persists structured application state and business data.',
-    tags: ['Postgres', 'Redis'],
+    tags: ['Relational', 'Cache', 'Data warehouse'],
+    companies: ['PostgreSQL', 'MongoDB', 'Redis', 'Snowflake'],
     connections: ['api', 'pipeline'],
   },
   {
@@ -42,7 +45,8 @@ export const nodes: StackNode[] = [
     icon: '🔀',
     layerId: 'data',
     description: 'Moves and transforms data between sources, storage, and models.',
-    tags: ['ETL', 'Airflow'],
+    tags: ['ETL', 'Orchestration'],
+    companies: ['Apache Airflow', 'Fivetran', 'dbt Labs', 'Databricks'],
     connections: ['ml', 'database'],
   },
   {
@@ -51,7 +55,8 @@ export const nodes: StackNode[] = [
     icon: '🔌',
     layerId: 'backend',
     description: 'Business logic and service boundary between data and product.',
-    tags: ['REST', 'GraphQL'],
+    tags: ['REST', 'GraphQL', 'API gateway'],
+    companies: ['Kong', 'Postman', 'Apigee (Google)', 'AWS API Gateway'],
     connections: ['webapp', 'database', 'ml'],
   },
   {
@@ -60,7 +65,8 @@ export const nodes: StackNode[] = [
     icon: '🧠',
     layerId: 'backend',
     description: 'Model inference and training jobs consumed by the API layer.',
-    tags: ['PyTorch', 'MLOps'],
+    tags: ['Foundation models', 'Inference', 'MLOps'],
+    companies: ['OpenAI', 'Anthropic', 'Hugging Face', 'Scale AI'],
     connections: ['api', 'pipeline'],
   },
   {
@@ -69,7 +75,8 @@ export const nodes: StackNode[] = [
     icon: '💻',
     layerId: 'frontend',
     description: 'Customer-facing interface that talks to the API layer.',
-    tags: ['React', 'TypeScript'],
+    tags: ['Framework', 'Hosting'],
+    companies: ['Vercel', 'Netlify', 'Meta (React)', 'Google (Angular)'],
     connections: ['api', 'customers'],
   },
   {
@@ -78,7 +85,8 @@ export const nodes: StackNode[] = [
     icon: '📱',
     layerId: 'frontend',
     description: 'Native client sharing the same API surface as the web app.',
-    tags: ['iOS', 'Android'],
+    tags: ['iOS', 'Android', 'Cross-platform'],
+    companies: ['Apple', 'Google', 'Expo (React Native)', 'Flutter (Google)'],
     connections: ['api', 'customers'],
   },
   {
@@ -88,6 +96,7 @@ export const nodes: StackNode[] = [
     layerId: 'users',
     description: 'The market segment the product is built for, generating usage and revenue signal back into the stack.',
     tags: ['B2B', 'B2C'],
+    companies: [],
     connections: ['webapp', 'mobile'],
   },
 ]

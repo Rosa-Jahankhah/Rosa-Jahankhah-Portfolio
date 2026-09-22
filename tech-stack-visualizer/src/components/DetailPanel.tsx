@@ -60,6 +60,17 @@ export default function DetailPanel({ node, allNodes, onClose }: DetailPanelProp
             ))}
           </div>
 
+          {node.companies.length > 0 && (
+            <>
+              <h3>Companies in this space</h3>
+              <ul className="detail-panel__companies">
+                {node.companies.map((company) => (
+                  <li key={company}>{company}</li>
+                ))}
+              </ul>
+            </>
+          )}
+
           <h3>Connects to</h3>
           <ul className="detail-panel__connections">
             {connectedLabels.map((label) => (

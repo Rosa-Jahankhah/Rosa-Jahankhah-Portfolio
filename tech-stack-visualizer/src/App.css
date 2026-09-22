@@ -173,3 +173,17 @@
   font-size: 0.85rem;
   color: #1f2937;
 }
+
+.detail-panel__companies {
+  margin: 0 0 20px;
+  padding: 0;
+  list-style: none;
+}
+
+.detail-panel__companies li {
+  padding: 6px 0;
+  border-bottom: 1px solid #f1f5f9;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #111827;
+}

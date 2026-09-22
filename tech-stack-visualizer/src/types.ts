@@ -12,5 +12,6 @@ export interface StackNode {
   layerId: string
   description: string
   tags: string[]
+  companies: string[]
   connections: string[]
 }
