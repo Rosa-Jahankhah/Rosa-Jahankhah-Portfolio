@@ -32,6 +32,20 @@ export default function DetailPanel({ node, allNodes, onClose }: DetailPanelProp
           </div>
           <p className="detail-panel__description">{node.description}</p>
 
+          {node.howItWorks && node.howItWorks.length > 0 && (
+            <>
+              <h3>How it works</h3>
+              <div className="detail-panel__flow">
+                {node.howItWorks.map((step, index) => (
+                  <div key={step} className="detail-panel__flow-step-wrapper">
+                    <div className="detail-panel__flow-step">{step}</div>
+                    {index < node.howItWorks!.length - 1 && <div className="detail-panel__flow-arrow">↓</div>}
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
+
           <div className="detail-panel__gauge">
             <svg width="120" height="120" viewBox="0 0 120 120">
               <circle cx="60" cy="60" r={RADIUS} stroke="#e5e7eb" strokeWidth="10" fill="none" />

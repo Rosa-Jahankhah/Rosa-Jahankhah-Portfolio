@@ -13,5 +13,6 @@ export interface StackNode {
   description: string
   tags: string[]
   companies: string[]
+  howItWorks?: string[]
   connections: string[]
 }

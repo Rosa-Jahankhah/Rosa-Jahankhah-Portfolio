@@ -54,6 +54,17 @@ export default function NodeMesh({ node, position, color, isSelected, onSelect }
           {node.label}
         </div>
       </Html>
+      {node.companies.length > 0 && (
+        <Html distanceFactor={12} position={[0, -0.7, 0]} center>
+          <div className="company-cluster">
+            {node.companies.map((company) => (
+              <span key={company} className="company-pill">
+                {company}
+              </span>
+            ))}
+          </div>
+        </Html>
+      )}
     </group>
   )
 }

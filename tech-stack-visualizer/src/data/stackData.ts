@@ -17,6 +17,13 @@ export const nodes: StackNode[] = [
     description: 'Compute, networking, and deployment target for every service above it.',
     tags: ['Compute', 'Networking', 'Container orchestration'],
     companies: ['AWS', 'Google Cloud', 'Microsoft Azure', 'DigitalOcean', 'Cloudflare'],
+    howItWorks: [
+      'Client request hits the network edge',
+      'Load balancer routes it to a healthy server',
+      'Compute (VMs / containers) runs the application',
+      'Storage & networking persist and move data',
+      'Response travels back to the client',
+    ],
     connections: ['database', 'api'],
   },
   {

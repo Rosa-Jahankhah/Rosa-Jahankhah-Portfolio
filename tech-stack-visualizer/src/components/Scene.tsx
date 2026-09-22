@@ -16,26 +16,51 @@ interface SceneProps {
 const OVERVIEW_POSITION = new Vector3(13, 13, 18)
 const OVERVIEW_TARGET = new Vector3(0, 6, 0)
 
+const FOCUS_ANIMATION_SECONDS = 0.8
+
 function CameraRig({ focusPosition }: { focusPosition: [number, number, number] | null }) {
   const controlsRef = useRef<OrbitControlsImpl>(null)
-  const desiredPosition = useRef(new Vector3())
-  const desiredTarget = useRef(new Vector3())
+  const focusKeyRef = useRef<string | null>('__initial__')
+  const animationRef = useRef({
+    active: false,
+    startTime: 0,
+    fromPosition: new Vector3(),
+    fromTarget: new Vector3(),
+    toPosition: new Vector3(),
+    toTarget: new Vector3(),
+  })
 
-  useFrame(({ camera }) => {
+  useFrame(({ camera, clock }) => {
     const controls = controlsRef.current
     if (!controls) return
 
-    if (focusPosition) {
-      desiredPosition.current.set(focusPosition[0] * 1.6, focusPosition[1] + 3, focusPosition[2] * 1.6)
-      desiredTarget.current.set(...focusPosition)
-    } else {
-      desiredPosition.current.copy(OVERVIEW_POSITION)
-      desiredTarget.current.copy(OVERVIEW_TARGET)
+    const focusKey = focusPosition ? focusPosition.join(',') : 'overview'
+    if (focusKey !== focusKeyRef.current) {
+      focusKeyRef.current = focusKey
+      const anim = animationRef.current
+      anim.active = true
+      anim.startTime = clock.getElapsedTime()
+      anim.fromPosition.copy(camera.position)
+      anim.fromTarget.copy(controls.target)
+      if (focusPosition) {
+        anim.toPosition.set(focusPosition[0] * 1.6, focusPosition[1] + 3, focusPosition[2] * 1.6)
+        anim.toTarget.set(...focusPosition)
+      } else {
+        anim.toPosition.copy(OVERVIEW_POSITION)
+        anim.toTarget.copy(OVERVIEW_TARGET)
+      }
     }
 
-    camera.position.lerp(desiredPosition.current, 0.06)
-    controls.target.lerp(desiredTarget.current, 0.06)
+    const anim = animationRef.current
+    if (!anim.active) return
+
+    const elapsed = clock.getElapsedTime() - anim.startTime
+    const t = Math.min(elapsed / FOCUS_ANIMATION_SECONDS, 1)
+    const eased = 1 - Math.pow(1 - t, 3)
+    camera.position.lerpVectors(anim.fromPosition, anim.toPosition, eased)
+    controls.target.lerpVectors(anim.fromTarget, anim.toTarget, eased)
     controls.update()
+    if (t >= 1) anim.active = false
   })
 
   return <OrbitControls ref={controlsRef} enableDamping dampingFactor={0.08} minDistance={4} maxDistance={30} />
