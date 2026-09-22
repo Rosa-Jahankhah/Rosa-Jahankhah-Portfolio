@@ -15,4 +15,5 @@ export interface StackNode {
   companies: string[]
   howItWorks?: string[]
   connections: string[]
+  components?: string[]
 }

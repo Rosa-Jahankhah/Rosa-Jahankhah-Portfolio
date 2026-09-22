@@ -6,6 +6,7 @@ export const layers: StackLayer[] = [
   { id: 'backend', label: 'Backend & APIs', color: '#7c3aed', y: 6 },
   { id: 'frontend', label: 'Frontend & Product', color: '#db2777', y: 9 },
   { id: 'users', label: 'Users & Market', color: '#f59e0b', y: 12 },
+  { id: 'products', label: 'Products', color: '#0d9488', y: 15 },
 ]
 
 export const nodes: StackNode[] = [
@@ -105,5 +106,28 @@ export const nodes: StackNode[] = [
     tags: ['B2B', 'B2C'],
     companies: [],
     connections: ['webapp', 'mobile'],
+  },
+  {
+    id: 'ai-assistant',
+    label: 'AI Support Assistant',
+    icon: '🤖',
+    layerId: 'products',
+    description:
+      'A real product is rarely one layer -- this one is assembled from pieces across the whole stack: a web front end, an API, an ML model, a database, and the cloud it all runs on.',
+    tags: ['Product'],
+    companies: [],
+    connections: [],
+    components: ['webapp', 'api', 'ml', 'database', 'cloud'],
+  },
+  {
+    id: 'analytics-dashboard',
+    label: 'Analytics Dashboard',
+    icon: '📊',
+    layerId: 'products',
+    description: 'A reporting product built from the data pipeline, the database, the API, and the web app that renders it.',
+    tags: ['Product'],
+    companies: [],
+    connections: [],
+    components: ['pipeline', 'database', 'api', 'webapp'],
   },
 ]

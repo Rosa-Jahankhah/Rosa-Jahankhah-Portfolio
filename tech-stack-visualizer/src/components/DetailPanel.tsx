@@ -10,13 +10,21 @@ const RADIUS = 40
 const CIRCUMFERENCE = 2 * Math.PI * RADIUS
 
 export default function DetailPanel({ node, allNodes, onClose }: DetailPanelProps) {
-  const linkCount = node?.connections.length ?? 0
+  const linkCount = (node?.connections.length ?? 0) + (node?.components?.length ?? 0)
   const ratio = allNodes.length > 0 ? linkCount / allNodes.length : 0
   const dashOffset = CIRCUMFERENCE * (1 - ratio)
   const connectedLabels = node
     ? node.connections
         .map((id) => allNodes.find((candidate) => candidate.id === id)?.label)
         .filter((label): label is string => Boolean(label))
+    : []
+  const componentLabels = node?.components
+    ? node.components
+        .map((id) => allNodes.find((candidate) => candidate.id === id)?.label)
+        .filter((label): label is string => Boolean(label))
+    : []
+  const usedInProducts = node
+    ? allNodes.filter((candidate) => candidate.components?.includes(node.id)).map((candidate) => candidate.label)
     : []
 
   return (
@@ -31,6 +39,28 @@ export default function DetailPanel({ node, allNodes, onClose }: DetailPanelProp
             <h2>{node.label}</h2>
           </div>
           <p className="detail-panel__description">{node.description}</p>
+
+          {componentLabels.length > 0 && (
+            <>
+              <h3>Built from</h3>
+              <ul className="detail-panel__components">
+                {componentLabels.map((label) => (
+                  <li key={label}>{label}</li>
+                ))}
+              </ul>
+            </>
+          )}
+
+          {usedInProducts.length > 0 && (
+            <>
+              <h3>Part of these products</h3>
+              <ul className="detail-panel__components">
+                {usedInProducts.map((label) => (
+                  <li key={label}>{label}</li>
+                ))}
+              </ul>
+            </>
+          )}
 
           {node.howItWorks && node.howItWorks.length > 0 && (
             <>
@@ -85,12 +115,16 @@ export default function DetailPanel({ node, allNodes, onClose }: DetailPanelProp
             </>
           )}
 
-          <h3>Connects to</h3>
-          <ul className="detail-panel__connections">
-            {connectedLabels.map((label) => (
-              <li key={label}>{label}</li>
-            ))}
-          </ul>
+          {connectedLabels.length > 0 && (
+            <>
+              <h3>Connects to</h3>
+              <ul className="detail-panel__connections">
+                {connectedLabels.map((label) => (
+                  <li key={label}>{label}</li>
+                ))}
+              </ul>
+            </>
+          )}
         </>
       )}
     </aside>

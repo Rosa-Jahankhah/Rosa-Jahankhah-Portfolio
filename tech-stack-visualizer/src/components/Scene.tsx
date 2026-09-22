@@ -13,8 +13,8 @@ interface SceneProps {
   onSelectNode: (node: StackNode) => void
 }
 
-const OVERVIEW_POSITION = new Vector3(13, 13, 18)
-const OVERVIEW_TARGET = new Vector3(0, 6, 0)
+const OVERVIEW_POSITION = new Vector3(15, 16, 22)
+const OVERVIEW_TARGET = new Vector3(0, 7.5, 0)
 
 const FOCUS_ANIMATION_SECONDS = 0.8
 
@@ -63,7 +63,7 @@ function CameraRig({ focusPosition }: { focusPosition: [number, number, number] 
     if (t >= 1) anim.active = false
   })
 
-  return <OrbitControls ref={controlsRef} enableDamping dampingFactor={0.08} minDistance={4} maxDistance={30} />
+  return <OrbitControls ref={controlsRef} enableDamping dampingFactor={0.08} minDistance={4} maxDistance={36} />
 }
 
 export default function Scene({ selectedNode, onSelectNode }: SceneProps) {
@@ -80,6 +80,16 @@ export default function Scene({ selectedNode, onSelectNode }: SceneProps) {
       const from = positions[node.id]
       const to = positions[targetId]
       if (from && to) edges.push({ key, from, to })
+    }
+  }
+
+  const componentEdges: { key: string; from: [number, number, number]; to: [number, number, number] }[] = []
+  for (const node of nodes) {
+    if (!node.components) continue
+    for (const componentId of node.components) {
+      const from = positions[node.id]
+      const to = positions[componentId]
+      if (from && to) componentEdges.push({ key: `${node.id}__${componentId}`, from, to })
     }
   }
 
@@ -108,6 +118,20 @@ export default function Scene({ selectedNode, onSelectNode }: SceneProps) {
         <Line key={edge.key} points={[edge.from, edge.to]} color="#64748b" lineWidth={1} transparent opacity={0.5} />
       ))}
 
+      {componentEdges.map((edge) => (
+        <Line
+          key={edge.key}
+          points={[edge.from, edge.to]}
+          color="#0d9488"
+          lineWidth={1.5}
+          dashed
+          dashSize={0.15}
+          gapSize={0.1}
+          transparent
+          opacity={0.6}
+        />
+      ))}
+
       {nodes.map((node) => (
         <NodeMesh
           key={node.id}
@@ -115,6 +139,7 @@ export default function Scene({ selectedNode, onSelectNode }: SceneProps) {
           position={positions[node.id]}
           color={layerColorById.get(node.layerId) ?? '#334155'}
           isSelected={selectedNode?.id === node.id}
+          isProduct={node.layerId === 'products'}
           onSelect={onSelectNode}
         />
       ))}

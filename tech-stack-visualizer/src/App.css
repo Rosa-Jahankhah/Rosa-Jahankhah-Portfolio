@@ -239,3 +239,16 @@
   font-weight: 500;
   color: #111827;
 }
+
+.detail-panel__components {
+  margin: 0 0 20px;
+  padding: 0;
+  list-style: none;
+}
+
+.detail-panel__components li {
+  padding: 6px 0;
+  border-bottom: 1px solid #f1f5f9;
+  font-size: 0.85rem;
+  color: #0d9488;
+}
