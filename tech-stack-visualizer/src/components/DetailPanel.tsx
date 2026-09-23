@@ -23,7 +23,7 @@ export default function DetailPanel({ node, allNodes, onClose }: DetailPanelProp
         .map((id) => allNodes.find((candidate) => candidate.id === id)?.label)
         .filter((label): label is string => Boolean(label))
     : []
-  const usedInProducts = node
+  const usedBy = node
     ? allNodes.filter((candidate) => candidate.components?.includes(node.id)).map((candidate) => candidate.label)
     : []
 
@@ -51,11 +51,11 @@ export default function DetailPanel({ node, allNodes, onClose }: DetailPanelProp
             </>
           )}
 
-          {usedInProducts.length > 0 && (
+          {usedBy.length > 0 && (
             <>
-              <h3>Part of these products</h3>
+              <h3>Used by</h3>
               <ul className="detail-panel__components">
-                {usedInProducts.map((label) => (
+                {usedBy.map((label) => (
                   <li key={label}>{label}</li>
                 ))}
               </ul>

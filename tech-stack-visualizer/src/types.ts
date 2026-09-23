@@ -3,6 +3,7 @@ export interface StackLayer {
   label: string
   color: string
   y: number
+  shape?: 'ring' | 'cylinder'
 }
 
 export interface StackNode {

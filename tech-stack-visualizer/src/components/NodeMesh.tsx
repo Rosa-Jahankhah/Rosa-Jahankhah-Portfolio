@@ -9,11 +9,10 @@ interface NodeMeshProps {
   position: [number, number, number]
   color: string
   isSelected: boolean
-  isProduct: boolean
   onSelect: (node: StackNode) => void
 }
 
-export default function NodeMesh({ node, position, color, isSelected, isProduct, onSelect }: NodeMeshProps) {
+export default function NodeMesh({ node, position, color, isSelected, onSelect }: NodeMeshProps) {
   const meshRef = useRef<Mesh>(null)
   const [hovered, setHovered] = useState(false)
 
@@ -42,7 +41,7 @@ export default function NodeMesh({ node, position, color, isSelected, isProduct,
           document.body.style.cursor = 'auto'
         }}
       >
-        {isProduct ? <boxGeometry args={[0.65, 0.65, 0.65]} /> : <sphereGeometry args={[0.4, 32, 32]} />}
+        <sphereGeometry args={[0.4, 32, 32]} />
         <meshStandardMaterial
           color={color}
           emissive={color}

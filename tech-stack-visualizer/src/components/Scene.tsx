@@ -4,7 +4,7 @@ import { Html, Line, OrbitControls } from '@react-three/drei'
 import { DoubleSide, Vector3 } from 'three'
 import type { OrbitControls as OrbitControlsImpl } from 'three-stdlib'
 import { layers, nodes } from '../data/stackData'
-import { computeNodePositions } from '../utils/layout'
+import { computeNodePositions, CYLINDER_AXIS, CYLINDER_RADIUS } from '../utils/layout'
 import NodeMesh from './NodeMesh'
 import type { StackNode } from '../types'
 
@@ -13,8 +13,8 @@ interface SceneProps {
   onSelectNode: (node: StackNode) => void
 }
 
-const OVERVIEW_POSITION = new Vector3(15, 16, 22)
-const OVERVIEW_TARGET = new Vector3(0, 7.5, 0)
+const OVERVIEW_POSITION = new Vector3(17, 14, 22)
+const OVERVIEW_TARGET = new Vector3(3, 6, 0)
 
 const FOCUS_ANIMATION_SECONDS = 0.8
 
@@ -83,15 +83,21 @@ export default function Scene({ selectedNode, onSelectNode }: SceneProps) {
     }
   }
 
-  const componentEdges: { key: string; from: [number, number, number]; to: [number, number, number] }[] = []
+  const componentEdges: { key: string; from: [number, number, number]; to: [number, number, number]; color: string }[] = []
   for (const node of nodes) {
     if (!node.components) continue
+    const color = layerColorById.get(node.layerId) ?? '#f97316'
     for (const componentId of node.components) {
       const from = positions[node.id]
       const to = positions[componentId]
-      if (from && to) componentEdges.push({ key: `${node.id}__${componentId}`, from, to })
+      if (from && to) componentEdges.push({ key: `${node.id}__${componentId}`, from, to, color })
     }
   }
+
+  const ringLayers = layers.filter((layer) => layer.shape !== 'cylinder')
+  const cylinderLayers = layers.filter((layer) => layer.shape === 'cylinder')
+  const cylinderMinY = cylinderLayers.length > 0 ? Math.min(...cylinderLayers.map((layer) => layer.y)) - 1.5 : 0
+  const cylinderMaxY = cylinderLayers.length > 0 ? Math.max(...cylinderLayers.map((layer) => layer.y)) + 1.5 : 0
 
   return (
     <Canvas camera={{ position: OVERVIEW_POSITION.toArray(), fov: 50 }}>
@@ -100,7 +106,7 @@ export default function Scene({ selectedNode, onSelectNode }: SceneProps) {
       <pointLight position={[10, 18, 10]} intensity={1} />
       <CameraRig focusPosition={selectedNode ? positions[selectedNode.id] : null} />
 
-      {layers.map((layer) => (
+      {ringLayers.map((layer) => (
         <group key={layer.id} position={[0, layer.y, 0]}>
           <mesh rotation={[-Math.PI / 2, 0, 0]}>
             <ringGeometry args={[3.3, 3.7, 64]} />
@@ -114,6 +120,32 @@ export default function Scene({ selectedNode, onSelectNode }: SceneProps) {
         </group>
       ))}
 
+      {cylinderLayers.length > 0 && (
+        <group>
+          <mesh position={[CYLINDER_AXIS.x, (cylinderMinY + cylinderMaxY) / 2, CYLINDER_AXIS.z]}>
+            <cylinderGeometry
+              args={[CYLINDER_RADIUS + 0.6, CYLINDER_RADIUS + 0.6, cylinderMaxY - cylinderMinY, 32, 1, true]}
+            />
+            <meshBasicMaterial color="#f97316" transparent opacity={0.1} side={DoubleSide} />
+          </mesh>
+          <Html position={[CYLINDER_AXIS.x, cylinderMaxY + 0.7, CYLINDER_AXIS.z]} center distanceFactor={14}>
+            <div className="layer-label" style={{ borderColor: '#f97316' }}>
+              Agentic Pipeline
+            </div>
+          </Html>
+          {cylinderLayers.map((layer) => (
+            <mesh
+              key={layer.id}
+              position={[CYLINDER_AXIS.x, layer.y, CYLINDER_AXIS.z]}
+              rotation={[-Math.PI / 2, 0, 0]}
+            >
+              <ringGeometry args={[CYLINDER_RADIUS + 0.3, CYLINDER_RADIUS + 0.5, 32]} />
+              <meshBasicMaterial color={layer.color} transparent opacity={0.6} side={DoubleSide} />
+            </mesh>
+          ))}
+        </group>
+      )}
+
       {edges.map((edge) => (
         <Line key={edge.key} points={[edge.from, edge.to]} color="#64748b" lineWidth={1} transparent opacity={0.5} />
       ))}
@@ -122,7 +154,7 @@ export default function Scene({ selectedNode, onSelectNode }: SceneProps) {
         <Line
           key={edge.key}
           points={[edge.from, edge.to]}
-          color="#0d9488"
+          color={edge.color}
           lineWidth={1.5}
           dashed
           dashSize={0.15}
@@ -139,7 +171,6 @@ export default function Scene({ selectedNode, onSelectNode }: SceneProps) {
           position={positions[node.id]}
           color={layerColorById.get(node.layerId) ?? '#334155'}
           isSelected={selectedNode?.id === node.id}
-          isProduct={node.layerId === 'products'}
           onSelect={onSelectNode}
         />
       ))}
